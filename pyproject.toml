@@ -13,6 +13,7 @@ uvicorn = "^0.27.1"
 psycopg = "^3.1.18"
 sqlalchemy = "^2.0.27"
 alembic = "^1.13.1"
+pydantic-settings = "^2.2.1"
 
 
 [tool.poetry.group.dev.dependencies]
@@ -46,7 +47,6 @@ exclude = '''
 )/
 '''
 
-
 [tool.ruff]
 line-length = 120
 
@@ -70,6 +70,7 @@ select = [
 
 [tool.pytest.ini_options]
 addopts = "-ra -vv"
+filterwarnings = "ignore::DeprecationWarning"
 
 testpaths = [
     "tests",
