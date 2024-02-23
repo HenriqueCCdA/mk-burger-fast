@@ -11,7 +11,7 @@ jobs:
   tests:
     runs-on: ubuntu-latest
     env:
-      DATABASE_URL: postgresql+psycopg://test_user:test_password@localhost:5432/confiacim_api
+      MK_BURGER_DATABASE_URL: postgresql+psycopg://test_user:test_password@localhost:5432/confiacim_api
 
     strategy:
       fail-fast: true

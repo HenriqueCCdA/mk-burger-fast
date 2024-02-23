@@ -1,9 +1,16 @@
-class Settings:
+from pydantic_settings import BaseSettings, SettingsConfigDict
+
+
+class Settings(BaseSettings):
+
+    model_config = SettingsConfigDict(
+        env_prefix="mk_burger_",
+        env_file=".env",
+        env_file_encoding="utf-8",
+    )
+
     DATABASE_URL: str
-    ECHO: bool
+    ECHO: bool = False
 
 
-settings = Settings()
-
-settings.DATABASE_URL = "postgresql+psycopg://mk_burger_fast_user:mk_burger_fast_password@localhost:5432/mk_burger_fast"
-settings.ECHO = False
+settings = Settings()  # type: ignore
