@@ -1,6 +1,7 @@
 import pytest
-from app.models import Status
 from sqlalchemy import select
+
+from app.models import Status
 
 
 @pytest.mark.unit
