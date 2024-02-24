@@ -1,6 +1,7 @@
 import pytest
-from app.models import Bread
 from sqlalchemy import select
+
+from app.models import Bread
 
 
 @pytest.mark.unit

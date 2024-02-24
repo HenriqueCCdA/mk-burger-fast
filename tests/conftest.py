@@ -1,8 +1,12 @@
 import pytest
-from app.conf import settings
-from app.models import Base, Bread, Burger, Meat, Optional, Status
+from fastapi.testclient import TestClient
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
+
+from app.conf import settings
+from app.db import get_session
+from app.main import app
+from app.models import Base, Bread, Burger, Meat, Optional, Status
 
 
 @pytest.fixture
@@ -14,6 +18,18 @@ def session():
         yield session
         session.rollback()
     Base.metadata.drop_all(engine)
+
+
+@pytest.fixture
+def client(session):
+    def get_session_override():
+        return session
+
+    with TestClient(app) as client:
+        app.dependency_overrides[get_session] = get_session_override
+        yield client
+
+    app.dependency_overrides.clear()
 
 
 @pytest.fixture
@@ -34,6 +50,19 @@ def optional():
 @pytest.fixture
 def status():
     return Status(tipo="Solicitado")
+
+
+@pytest.fixture
+def status_list(session):
+    list_ = [
+        Status(tipo="Solicitado"),
+        Status(tipo="Em produção"),
+    ]
+
+    session.add_all(list_)
+    session.commit()
+
+    return list_
 
 
 @pytest.fixture

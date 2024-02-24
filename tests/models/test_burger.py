@@ -1,6 +1,7 @@
 import pytest
-from app.models import Burger
 from sqlalchemy import select
+
+from app.models import Burger
 
 
 @pytest.mark.unit

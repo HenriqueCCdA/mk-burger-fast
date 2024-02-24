@@ -1,6 +1,7 @@
 import pytest
-from app.models import Meat
 from sqlalchemy import select
+
+from app.models import Meat
 
 
 @pytest.mark.unit

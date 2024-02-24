@@ -54,7 +54,7 @@ exclude = [
     ".venv"
 ]
 
-src = ["src", "tests"]
+src = [".", "tests"]
 
 [tool.ruff.lint]
 

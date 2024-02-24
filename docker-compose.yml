@@ -15,7 +15,7 @@ services:
       - POSTGRES_USER=mk_burger_fast_user
       - POSTGRES_DBS=mk_burger_fast, mk_burger_fast_test
     ports:
-      - 5432:5432
+      - 5434:5432
 
 volumes:
   pg_data:
