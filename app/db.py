@@ -8,9 +8,11 @@ from app.conf import settings
 
 engine = create_engine(url=settings.DATABASE_URL, echo=settings.ECHO)
 
+SessionFactory = sessionmaker(engine)
+
 
 def get_session():
-    with sessionmaker(engine) as session:
+    with SessionFactory() as session:
         yield session
 
 

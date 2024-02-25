@@ -1,6 +1,15 @@
 from pydantic import BaseModel
 
 
-class StatusOut(BaseModel):
+class BaseItemOut(BaseModel):
     id: int
     tipo: str
+
+
+class StatusOut(BaseItemOut): ...
+
+
+class IngredientsOut(BaseModel):
+    paes: list[BaseItemOut]
+    carnes: list[BaseItemOut]
+    opcionais: list[BaseItemOut]
