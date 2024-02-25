@@ -66,6 +66,20 @@ def status_list(session):
 
 
 @pytest.fixture
+def ingredients(session):
+
+    obj1 = Bread(tipo="Integral")
+    obj2 = Meat(tipo="Alcatra")
+    obj3 = Meat(tipo="Maminha")
+    obj4 = Optional(tipo="Cebola roxa")
+
+    session.add_all([obj1, obj2, obj3, obj4])
+    session.commit()
+
+    return {"breads": [obj1], "meats": [obj2, obj3], "optionals": [obj4]}
+
+
+@pytest.fixture
 def burger(session, bread, meat, optional, status):
 
     session.add_all([bread, meat, optional, status])
