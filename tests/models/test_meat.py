@@ -12,7 +12,7 @@ def test_model_instance_obj(meat):
 
 
 @pytest.mark.unit
-def test_model_bread(meat):
+def test_model_meat(meat):
     assert str(meat) == "Meat(tipo=Alcatra)"
 
 
@@ -22,10 +22,10 @@ def test_model_persist_in_db(session, meat):
     session.commit()
     session.reset()
 
-    bread_from_db = session.scalar(select(Meat))
+    meat_from_db = session.scalar(select(Meat))
 
-    assert bread_from_db is not None
-    assert bread_from_db is not meat
+    assert meat_from_db is not None
+    assert meat_from_db is not meat
 
-    assert bread_from_db, id is not None
-    assert bread_from_db.tipo == "Alcatra"
+    assert meat_from_db, id is not None
+    assert meat_from_db.tipo == "Alcatra"

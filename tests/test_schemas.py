@@ -1,6 +1,6 @@
 import pytest
 
-from app.schemas import BaseItemOut, IngredientsOut, StatusOut
+from app.schemas import BaseItemOut, BurgerOut, IngredientsOut, StatusOut
 
 
 @pytest.mark.unit
@@ -42,3 +42,22 @@ def test_indredientes():
     assert ingredientes.paes[0] == BaseItemOut(id=2, tipo="3 Queijos")
     assert ingredientes.carnes[0] == BaseItemOut(id=4, tipo="Veggie burger")
     assert ingredientes.opcionais[0] == BaseItemOut(id=6, tipo="Pepino")
+
+
+@pytest.mark.unit
+def test_burger():
+
+    burger = BurgerOut(
+        id=1,
+        nome="João",
+        pao="Italiano Branco",
+        carne="Maminha",
+        status="Solicitado",
+        opcionais=["Pepino", "Salame"],
+    )
+
+    assert burger.nome == "João"
+    assert burger.pao == "Italiano Branco"
+    assert burger.carne == "Maminha"
+    assert burger.status == "Solicitado"
+    assert burger.opcionais == ["Pepino", "Salame"]

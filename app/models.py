@@ -1,10 +1,18 @@
-from sqlalchemy import ForeignKey, String
+from sqlalchemy import Column, ForeignKey, String, Table
 from sqlalchemy.orm import DeclarativeBase, Mapped, mapped_column, relationship
 
 TYPE_NAME_LENGTH = 100
 
 
 class Base(DeclarativeBase): ...
+
+
+burger_optional_table = Table(
+    "burger_optional",
+    Base.metadata,
+    Column("burger_id", ForeignKey("burgers.id")),
+    Column("optional_id", ForeignKey("optionals.id")),
+)
 
 
 class Bread(Base):
@@ -44,8 +52,8 @@ class Optional(Base):
     tipo: Mapped[str] = mapped_column(String(TYPE_NAME_LENGTH))
 
     burgers: Mapped[list["Burger"]] = relationship(
-        back_populates="optional",
-        cascade="all, delete-orphan",
+        secondary=burger_optional_table,
+        back_populates="optionals",
     )
 
     def __repr__(self) -> str:
@@ -75,13 +83,13 @@ class Burger(Base):
 
     bread_id: Mapped[int] = mapped_column(ForeignKey("breads.id"))
     meat_id: Mapped[int] = mapped_column(ForeignKey("meats.id"))
-    optional_id: Mapped[int] = mapped_column(ForeignKey("optionals.id"))
     status_id: Mapped[int] = mapped_column(ForeignKey("status.id"))
 
     bread: Mapped[Bread] = relationship(back_populates="burgers")
     meat: Mapped[Meat] = relationship(back_populates="burgers")
-    optional: Mapped[Optional] = relationship(back_populates="burgers")
     status: Mapped[Status] = relationship(back_populates="burgers")
+
+    optionals: Mapped[list[Optional]] = relationship(secondary=burger_optional_table, back_populates="burgers")
 
     def __repr__(self) -> str:
         return f"{self.__class__.__name__}(name={self.name})"
