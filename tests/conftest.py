@@ -66,6 +66,31 @@ def status_list(session):
 
 
 @pytest.fixture
+def burger_list(session):
+
+    bread = Bread(tipo="Integral")
+    meat = Meat(tipo="Alcatra")
+    optional1 = Optional(tipo="Cebola roxa")
+    optional2 = Optional(tipo="Bacon")
+    status = Status(tipo="Solicitado")
+
+    session.add_all([bread, meat, optional1, optional2, status])
+    session.commit()
+
+    b1 = Burger(name="João", meat_id=meat.id, bread_id=bread.id, status_id=status.id)
+    b1.optionals.extend([optional1, optional2])
+    b2 = Burger(name="Maria", meat_id=meat.id, bread_id=bread.id, status_id=status.id)
+    b2.optionals.append(optional1)
+
+    list_ = [b1, b2]
+
+    session.add_all(list_)
+    session.commit()
+
+    return list_
+
+
+@pytest.fixture
 def ingredients(session):
 
     obj1 = Bread(tipo="Integral")
@@ -85,4 +110,7 @@ def burger(session, bread, meat, optional, status):
     session.add_all([bread, meat, optional, status])
     session.commit()
 
-    return Burger(name="João", meat_id=meat.id, bread_id=bread.id, optional_id=optional.id, status_id=status.id)
+    burger = Burger(name="João", meat_id=meat.id, bread_id=bread.id, status_id=status.id)
+    burger.optionals.append(optional)
+
+    return burger

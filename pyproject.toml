@@ -104,4 +104,4 @@ clean = {cmd="rm -rvf .ruff_cache && rm -v .coverage && rm -rfv .pytest_cache &&
 
 db = {cmd="docker compose up database -d", help="Subindo o contanier do DB."}
 
-# server_prod = {cmd="gunicorn mk_burger.wsgi --workers 3 --bind localhost:8000 --log-file=-  --access-logfile=-", help="Subindo gunicorn"}
+server_dev = {cmd="uvicorn app.main:app --reload", help="Subindo uvicorn."}

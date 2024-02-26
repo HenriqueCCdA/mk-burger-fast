@@ -44,3 +44,19 @@ def test_ingredients_list(client, ingredients):
     for r, e in zip(body["opcionais"], ingredients["optionals"]):
         assert r["id"] is not None
         assert r["tipo"] == e.tipo
+
+
+@pytest.mark.integration
+def test_list_burguers(client, burger_list):
+
+    response = client.get(app.url_path_for("list_burgers"))
+
+    assert response.status_code == status.HTTP_200_OK
+
+    body = response.json()
+
+    assert len(body) == 2
+
+    for e, r in zip(burger_list, body):
+        assert e.id is not None
+        assert e.name == r["nome"]

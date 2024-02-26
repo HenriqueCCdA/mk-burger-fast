@@ -22,10 +22,10 @@ def test_model_persist_in_db(session, optional):
     session.commit()
     session.reset()
 
-    bread_from_db = session.scalar(select(Optional))
+    optional_from_db = session.scalar(select(Optional))
 
-    assert bread_from_db is not None
-    assert bread_from_db is not optional
+    assert optional_from_db is not None
+    assert optional_from_db is not optional
 
-    assert bread_from_db, id is not None
-    assert bread_from_db.tipo == "Cebola roxa"
+    assert optional_from_db, id is not None
+    assert optional_from_db.tipo == "Cebola roxa"

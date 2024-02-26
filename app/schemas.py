@@ -13,3 +13,12 @@ class IngredientsOut(BaseModel):
     paes: list[BaseItemOut]
     carnes: list[BaseItemOut]
     opcionais: list[BaseItemOut]
+
+
+class BurgerOut(BaseModel):
+    id: int
+    nome: str
+    pao: str
+    carne: str
+    status: str
+    opcionais: list[str]
