@@ -38,8 +38,26 @@ def bread():
 
 
 @pytest.fixture
+def bread_db(session, bread):
+
+    session.add(bread)
+    session.commit()
+
+    return bread
+
+
+@pytest.fixture
 def meat():
     return Meat(tipo="Alcatra")
+
+
+@pytest.fixture
+def meat_db(session, meat):
+
+    session.add(meat)
+    session.commit()
+
+    return meat
 
 
 @pytest.fixture
@@ -48,8 +66,31 @@ def optional():
 
 
 @pytest.fixture
+def optional_list(session):
+
+    list_ = [
+        Optional(tipo="Cebola roxa"),
+        Optional(tipo="Cebola roxa"),
+    ]
+
+    session.add_all(list_)
+    session.commit()
+
+    return list_
+
+
+@pytest.fixture
 def status():
     return Status(tipo="Solicitado")
+
+
+@pytest.fixture
+def status_db(session, status):
+
+    session.add(status)
+    session.commit()
+
+    return status
 
 
 @pytest.fixture
@@ -114,3 +155,26 @@ def burger(session, bread, meat, optional, status):
     burger.optionals.append(optional)
 
     return burger
+
+
+@pytest.fixture
+def payload_create(session):
+
+    bread = Bread(tipo="Integral")
+    meat = Meat(tipo="Alcatra")
+    optional1 = Optional(tipo="Cebola roxa")
+    optional2 = Optional(tipo="Bacon")
+    status = Status(tipo="Solicitado")
+
+    session.add_all([bread, meat, optional1, optional2, status])
+    session.commit()
+
+    payload = {
+        "nome": "João",
+        "carne": meat.id,
+        "pao": bread.id,
+        "status": status.id,
+        "opcionais": [optional1.id, optional2.id],
+    }
+
+    return payload
