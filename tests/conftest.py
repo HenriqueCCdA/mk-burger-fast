@@ -158,6 +158,15 @@ def burger(session, bread, meat, optional, status):
 
 
 @pytest.fixture
+def burger_db(session, burger):
+
+    session.add(burger)
+    session.commit()
+
+    return burger
+
+
+@pytest.fixture
 def payload_create(session):
 
     bread = Bread(tipo="Integral")

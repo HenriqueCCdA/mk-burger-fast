@@ -2,26 +2,26 @@ from fastapi import APIRouter, HTTPException, status
 from sqlalchemy import select
 
 from app.db import ActiveSession
-from app.models import Bread, Burger, Meat, Optional, Status
-from app.schemas import BurgerIn, BurgerOut, IngredientsOut, StatusOut
+from app.models import Burger
+from app.schemas import BurgerIn, BurgerOut
 from app.service import CreatBurgerService, InvalidIgredients, InvalidOptionals
 
 router = APIRouter()
 
 
-@router.get("/status/", response_model=list[StatusOut])
-def list_status(session: ActiveSession):
-    return session.scalars(select(Status)).all()
+@router.delete("/burgers/{id}/", status_code=status.HTTP_204_NO_CONTENT)
+def delele_burger(session: ActiveSession, id: int):
 
+    burger = session.scalar(select(Burger).where(Burger.id == id))
 
-@router.get("/ingredientes/", response_model=IngredientsOut)
-def list_ingredients(session: ActiveSession):
+    if burger is None:
+        raise HTTPException(
+            detail="Buger não achado",
+            status_code=status.HTTP_404_NOT_FOUND,
+        )
 
-    meats = session.scalars(select(Meat)).all()
-    optionals = session.scalars(select(Optional)).all()
-    breads = session.scalars(select(Bread)).all()
-
-    return {"carnes": meats, "paes": breads, "opcionais": optionals}
+    session.delete(burger)
+    session.commit()
 
 
 @router.get("/burgers/", response_model=list[BurgerOut])
@@ -31,7 +31,7 @@ def list_burgers(session: ActiveSession):
 
 
 @router.post("/burgers/", response_model=BurgerOut, status_code=status.HTTP_201_CREATED)
-def create_burgers(session: ActiveSession, burger: BurgerIn):
+def create_burger(session: ActiveSession, burger: BurgerIn):
 
     create_service = CreatBurgerService(session)
 
