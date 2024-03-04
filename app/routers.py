@@ -30,7 +30,7 @@ def list_burgers(session: ActiveSession):
     return burgers
 
 
-@router.post("/burgers", response_model=BurgerOut, status_code=status.HTTP_201_CREATED)
+@router.post("/burgers/", response_model=BurgerOut, status_code=status.HTTP_201_CREATED)
 def create_burgers(session: ActiveSession, burger: BurgerIn):
 
     create_service = CreatBurgerService(session)
