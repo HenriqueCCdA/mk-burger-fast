@@ -22,3 +22,11 @@ class BurgerOut(BaseModel):
     carne: str
     status: str
     opcionais: list[str]
+
+
+class BurgerIn(BaseModel):
+    nome: str
+    pao: int
+    carne: int
+    status: int
+    opcionais: list[int]

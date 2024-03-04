@@ -93,7 +93,7 @@ fmt = {cmd="task fmt_ruff && task fmt_black", help="Formatador do código."}
 
 lin_mypy = {cmd="mypy --package tests --package app", help="Analisador estatico de tipos."}
 lin_ruff = {cmd="poetry run ruff check {src} tests", help="Linter com o Ruff.", use_vars = true}
-linter = {cmd="task lin_ruff && task lin_ruff", help="Linter."}
+linter = {cmd="task lin_ruff && task lin_mypy", help="Linter."}
 
 tests = {cmd="pytest", help="Rodando os testes."}
 tests_cov = {cmd="pytest --cov-report html --cov={src}", help="Rodando os testes com cobertura.", use_vars = true}
