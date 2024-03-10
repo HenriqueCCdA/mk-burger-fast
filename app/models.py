@@ -1,4 +1,7 @@
-from sqlalchemy import Column, ForeignKey, String, Table
+from datetime import datetime
+from typing import Optional as OptionalType
+
+from sqlalchemy import Column, DateTime, ForeignKey, String, Table, func
 from sqlalchemy.orm import DeclarativeBase, Mapped, mapped_column, relationship
 
 TYPE_NAME_LENGTH = 100
@@ -26,6 +29,9 @@ class Bread(Base):
         cascade="all, delete-orphan",
     )
 
+    create_at: Mapped[OptionalType[datetime]] = mapped_column(DateTime, default=func.now())
+    update_at: Mapped[OptionalType[datetime]] = mapped_column(DateTime, default=func.now(), onupdate=func.now())
+
     def __repr__(self) -> str:
         return f"{self.__class__.__name__}(tipo={self.tipo})"
 
@@ -40,6 +46,9 @@ class Meat(Base):
         back_populates="meat",
         cascade="all, delete-orphan",
     )
+
+    create_at: Mapped[OptionalType[datetime]] = mapped_column(DateTime, default=func.now())
+    update_at: Mapped[OptionalType[datetime]] = mapped_column(DateTime, default=func.now(), onupdate=func.now())
 
     def __repr__(self) -> str:
         return f"{self.__class__.__name__}(tipo={self.tipo})"
@@ -56,6 +65,9 @@ class Optional(Base):
         back_populates="optionals",
     )
 
+    create_at: Mapped[OptionalType[datetime]] = mapped_column(DateTime, default=func.now())
+    update_at: Mapped[OptionalType[datetime]] = mapped_column(DateTime, default=func.now(), onupdate=func.now())
+
     def __repr__(self) -> str:
         return f"{self.__class__.__name__}(tipo={self.tipo})"
 
@@ -70,6 +82,9 @@ class Status(Base):
         back_populates="status",
         cascade="all, delete-orphan",
     )
+
+    create_at: Mapped[OptionalType[datetime]] = mapped_column(DateTime, default=func.now())
+    update_at: Mapped[OptionalType[datetime]] = mapped_column(DateTime, default=func.now(), onupdate=func.now())
 
     def __repr__(self) -> str:
         return f"{self.__class__.__name__}(tipo={self.tipo})"
@@ -90,6 +105,9 @@ class Burger(Base):
     status: Mapped[Status] = relationship(back_populates="burgers")
 
     optionals: Mapped[list[Optional]] = relationship(secondary=burger_optional_table, back_populates="burgers")
+
+    create_at: Mapped[OptionalType[datetime]] = mapped_column(DateTime, default=func.now())
+    update_at: Mapped[OptionalType[datetime]] = mapped_column(DateTime, default=func.now(), onupdate=func.now())
 
     def __repr__(self) -> str:
         return f"{self.__class__.__name__}(name={self.name})"

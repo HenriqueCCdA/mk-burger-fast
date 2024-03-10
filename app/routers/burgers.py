@@ -59,11 +59,11 @@ def create_burger(session: ActiveSession, burger: BurgerIn):
             detail=e.args[0],
             status_code=status.HTTP_422_UNPROCESSABLE_ENTITY,
         ) from e
-
     return to_dict(burger_new)
 
 
-def to_dict(burger: Burger) -> dict[str, int | str | list[str]]:
+def to_dict(burger: Burger) -> dict:
+
     return {
         "id": burger.id,
         "nome": burger.name,
@@ -71,4 +71,6 @@ def to_dict(burger: Burger) -> dict[str, int | str | list[str]]:
         "pao": burger.bread.tipo,
         "status": burger.status.tipo,
         "opcionais": [it.tipo for it in burger.optionals],
+        "criado_em": burger.create_at,
+        "atualizado_em": burger.update_at,
     }

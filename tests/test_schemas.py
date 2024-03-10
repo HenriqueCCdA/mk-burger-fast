@@ -1,3 +1,5 @@
+from datetime import datetime
+
 import pytest
 
 from app.schemas import BaseItemOut, BurgerOut, IngredientsOut, StatusOut
@@ -5,11 +7,19 @@ from app.schemas import BaseItemOut, BurgerOut, IngredientsOut, StatusOut
 
 @pytest.mark.unit
 def test_base_item():
-
     status = BaseItemOut(id=2, tipo="Item genêrico")
+    assert status.model_dump_json(exclude_unset=True) == '{"id":2,"tipo":"Item genêrico"}'
 
-    assert status.id == 2
-    assert status.tipo == "Item genêrico"
+
+@pytest.mark.unit
+def test_base_item_with_time():
+
+    time = datetime(2024, 1, 1, 1, 2)
+
+    status = BaseItemOut(id=2, tipo="Item genêrico", criado_em=time, atualizado_em=time)
+
+    expected = '{"id":2,"tipo":"Item genêrico","criado_em":"2024-01-01T01:02:00","atualizado_em":"2024-01-01T01:02:00"}'
+    assert status.model_dump_json() == expected
 
 
 @pytest.mark.unit
@@ -56,8 +66,9 @@ def test_burger():
         opcionais=["Pepino", "Salame"],
     )
 
-    assert burger.nome == "João"
-    assert burger.pao == "Italiano Branco"
-    assert burger.carne == "Maminha"
-    assert burger.status == "Solicitado"
-    assert burger.opcionais == ["Pepino", "Salame"]
+    expected = (
+        '{"id":1,"nome":"João","pao":"Italiano Branco","carne":"Maminha",'
+        '"status":"Solicitado","opcionais":["Pepino","Salame"]}'
+    )
+
+    assert burger.model_dump_json(exclude_unset=True) == expected

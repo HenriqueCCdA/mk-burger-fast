@@ -29,18 +29,19 @@ def test_list_burgers(client, burger_list):
 def test_positive_create_burgers(client, payload_create):
 
     response = client.post(URL_CREATE_BURGER, json=payload_create)
+
     assert response.status_code == status.HTTP_201_CREATED
 
     body = response.json()
 
     assert body.pop("id") is not None
-    assert body == {
-        "nome": "João",
-        "carne": "Alcatra",
-        "pao": "Integral",
-        "status": "Solicitado",
-        "opcionais": ["Cebola roxa", "Bacon"],
-    }
+    assert body["nome"] == "João"
+    assert body["carne"] == "Alcatra"
+    assert body["pao"] == "Integral"
+    assert body["status"] == "Solicitado"
+    assert body["opcionais"] == ["Cebola roxa", "Bacon"]
+    assert "criado_em" in body
+    assert "atualizado_em" in body
 
 
 @pytest.mark.integration

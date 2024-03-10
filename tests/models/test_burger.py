@@ -15,6 +15,9 @@ def test_model_instance_obj(burger):
     assert burger.name == "João"
     assert len(burger.optionals) == 1
 
+    assert burger.create_at is None
+    assert burger.update_at is None
+
 
 @pytest.mark.unit
 def test_model_burger_repr(session, burger):
@@ -37,6 +40,9 @@ def test_model_persist_in_db(session, burger):
     assert burger_from_db.meat.tipo == "Alcatra"
     assert burger_from_db.optionals[0].tipo == "Cebola roxa"
     assert burger_from_db.status.tipo == "Solicitado"
+
+    assert burger_from_db.create_at is not None
+    assert burger_from_db.update_at is not None
 
 
 @pytest.mark.integration
