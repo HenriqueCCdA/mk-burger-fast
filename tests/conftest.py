@@ -97,6 +97,7 @@ def status_db(session, status):
 def status_list(session):
     list_ = [
         Status(tipo="Solicitado"),
+        Status(tipo="Finalizado"),
         Status(tipo="Em produção"),
     ]
 
@@ -146,12 +147,13 @@ def ingredients(session):
 
 
 @pytest.fixture
-def burger(session, bread, meat, optional, status):
+def burger(session, bread, meat, optional, status_list):
 
-    session.add_all([bread, meat, optional, status])
+    session.add_all([bread, meat, optional])
+    session.add_all(status_list)
     session.commit()
 
-    burger = Burger(name="João", meat_id=meat.id, bread_id=bread.id, status_id=status.id)
+    burger = Burger(name="João", meat_id=meat.id, bread_id=bread.id, status_id=status_list[0].id)
     burger.optionals.append(optional)
 
     return burger
