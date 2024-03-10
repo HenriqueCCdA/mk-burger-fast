@@ -2,21 +2,39 @@ from fastapi import APIRouter, HTTPException, status
 from sqlalchemy import select
 
 from app.db import ActiveSession
-from app.models import Burger
-from app.schemas import BurgerIn, BurgerOut
+from app.models import Burger, Status
+from app.schemas import BurgerIn, BurgerOut, StatusUpdate
 from app.service import CreatBurgerService, InvalidIgredients, InvalidOptionals
 
 router = APIRouter()
 
 
+@router.patch("/burgers/{id}/", status_code=status.HTTP_204_NO_CONTENT)
+def update_burger_status(session: ActiveSession, id: int, status_update: StatusUpdate):
+
+    if (status_ := session.get(Status, status_update.status)) is None:
+        raise HTTPException(
+            detail="Status inválido.",
+            status_code=status.HTTP_422_UNPROCESSABLE_ENTITY,
+        )
+
+    if (burger := session.get(Burger, id)) is None:
+        raise HTTPException(
+            detail="Buger não achado.",
+            status_code=status.HTTP_404_NOT_FOUND,
+        )
+
+    burger.status_id = status_.id
+
+    session.commit()
+
+
 @router.delete("/burgers/{id}/", status_code=status.HTTP_204_NO_CONTENT)
 def delele_burger(session: ActiveSession, id: int):
 
-    burger = session.scalar(select(Burger).where(Burger.id == id))
-
-    if burger is None:
+    if (burger := session.get(Burger, id)) is None:
         raise HTTPException(
-            detail="Buger não achado",
+            detail="Buger não achado.",
             status_code=status.HTTP_404_NOT_FOUND,
         )
 
@@ -26,8 +44,7 @@ def delele_burger(session: ActiveSession, id: int):
 
 @router.get("/burgers/", response_model=list[BurgerOut])
 def list_burgers(session: ActiveSession):
-    burgers = [to_dict(item) for item in session.scalars(select(Burger)).all()]
-    return burgers
+    return [to_dict(item) for item in session.scalars(select(Burger)).all()]
 
 
 @router.post("/burgers/", response_model=BurgerOut, status_code=status.HTTP_201_CREATED)

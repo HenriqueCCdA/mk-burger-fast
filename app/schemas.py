@@ -30,3 +30,7 @@ class BurgerIn(BaseModel):
     carne: int
     status: int
     opcionais: list[int]
+
+
+class StatusUpdate(BaseModel):
+    status: int
