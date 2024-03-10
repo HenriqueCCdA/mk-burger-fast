@@ -27,7 +27,7 @@ class CreatBurgerService:
         elif Model == Status:
             msg = f"Status com id '{id}' não existe."
 
-        if (obj := self._session.scalar(select(Model).where(Model.id == id))) is None:
+        if (obj := self._session.get(Model, id)) is None:
             raise InvalidIgredients(msg)
 
         return obj
