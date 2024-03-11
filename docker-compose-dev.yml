@@ -1,0 +1,39 @@
+version: "3.8"
+
+services:
+
+  app:
+    container_name: mk-burger-fast-api
+    build:
+      dockerfile: ./Dockerfile.dev
+    image: mk-burger-fast-api:dev
+    volumes:
+      - ./:/home/app/
+    restart: 'no'
+    stdin_open: true
+    tty: true
+    environment:
+      PYTHONBREAKPOINT: ipdb.set_trace
+      MK_BURGER_DATABASE_URL: postgresql+psycopg://mk_burger_fast_user:mk_burger_fast_password@database:5432/mk_burger_fast
+    ports:
+      - 8000:8000
+    depends_on:
+      - database
+
+  database:
+    container_name: mk-burger-fast-db
+    build:
+      context: postgres
+    restart: 'no'
+    volumes:
+      - pg_data:/var/lib/postgresql/data
+    environment:
+      - LC_ALL=C.UTF-8
+      - POSTGRES_PASSWORD=mk_burger_fast_password
+      - POSTGRES_USER=mk_burger_fast_user
+      - POSTGRES_DBS=mk_burger_fast, mk_burger_fast_test
+    ports:
+      - 5434:5432
+
+volumes:
+  pg_data:
