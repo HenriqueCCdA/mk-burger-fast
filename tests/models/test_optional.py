@@ -9,8 +9,8 @@ def test_model_instance_obj(optional):
 
     assert optional.id is None
     assert optional.tipo == "Cebola roxa"
-    assert optional.create_at is None
-    assert optional.update_at is None
+    assert optional.created_at is None
+    assert optional.updated_at is None
 
 
 @pytest.mark.unit
@@ -31,5 +31,5 @@ def test_model_persist_in_db(session, optional):
 
     assert optional_from_db, id is not None
     assert optional_from_db.tipo == "Cebola roxa"
-    assert optional_from_db.create_at is not None
-    assert optional_from_db.update_at is not None
+    assert optional_from_db.created_at is not None
+    assert optional_from_db.updated_at is not None

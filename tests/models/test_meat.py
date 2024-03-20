@@ -9,8 +9,8 @@ def test_model_instance_obj(meat):
 
     assert meat.id is None
     assert meat.tipo == "Alcatra"
-    assert meat.create_at is None
-    assert meat.update_at is None
+    assert meat.created_at is None
+    assert meat.updated_at is None
 
 
 @pytest.mark.unit
@@ -31,5 +31,5 @@ def test_model_persist_in_db(session, meat):
 
     assert meat_from_db, id is not None
     assert meat_from_db.tipo == "Alcatra"
-    assert meat_from_db.create_at is not None
-    assert meat_from_db.update_at is not None
+    assert meat_from_db.created_at is not None
+    assert meat_from_db.updated_at is not None

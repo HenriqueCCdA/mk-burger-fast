@@ -5,7 +5,6 @@ VALUES
 ('Italiano Branco'),
 ('Parmesão e Orégano');
 
-
 INSERT INTO meats (tipo)
 VALUES
 ('Alcatra'),

@@ -1,8 +1,8 @@
 """Create tables
 
-Revision ID: 68838629b63f
+Revision ID: afa31b4d324f
 Revises:
-Create Date: 2024-02-26 00:03:12.997388
+Create Date: 2024-03-19 21:40:49.034207
 
 """
 
@@ -13,7 +13,7 @@ import sqlalchemy as sa
 
 
 # revision identifiers, used by Alembic.
-revision: str = "68838629b63f"
+revision: str = "afa31b4d324f"
 down_revision: Union[str, None] = None
 branch_labels: Union[str, Sequence[str], None] = None
 depends_on: Union[str, Sequence[str], None] = None
@@ -25,24 +25,32 @@ def upgrade() -> None:
         "breads",
         sa.Column("id", sa.Integer(), nullable=False),
         sa.Column("tipo", sa.String(length=100), nullable=False),
+        sa.Column("created_at", sa.DateTime(), server_default=sa.text("now()"), nullable=True),
+        sa.Column("updated_at", sa.DateTime(), server_default=sa.text("now()"), nullable=True),
         sa.PrimaryKeyConstraint("id"),
     )
     op.create_table(
         "meats",
         sa.Column("id", sa.Integer(), nullable=False),
         sa.Column("tipo", sa.String(length=100), nullable=False),
+        sa.Column("created_at", sa.DateTime(), server_default=sa.text("now()"), nullable=True),
+        sa.Column("updated_at", sa.DateTime(), server_default=sa.text("now()"), nullable=True),
         sa.PrimaryKeyConstraint("id"),
     )
     op.create_table(
         "optionals",
         sa.Column("id", sa.Integer(), nullable=False),
         sa.Column("tipo", sa.String(length=100), nullable=False),
+        sa.Column("created_at", sa.DateTime(), server_default=sa.text("now()"), nullable=True),
+        sa.Column("updated_at", sa.DateTime(), server_default=sa.text("now()"), nullable=True),
         sa.PrimaryKeyConstraint("id"),
     )
     op.create_table(
         "status",
         sa.Column("id", sa.Integer(), nullable=False),
         sa.Column("tipo", sa.String(length=100), nullable=False),
+        sa.Column("created_at", sa.DateTime(), server_default=sa.text("now()"), nullable=True),
+        sa.Column("updated_at", sa.DateTime(), server_default=sa.text("now()"), nullable=True),
         sa.PrimaryKeyConstraint("id"),
     )
     op.create_table(
@@ -52,6 +60,8 @@ def upgrade() -> None:
         sa.Column("bread_id", sa.Integer(), nullable=False),
         sa.Column("meat_id", sa.Integer(), nullable=False),
         sa.Column("status_id", sa.Integer(), nullable=False),
+        sa.Column("created_at", sa.DateTime(), server_default=sa.text("now()"), nullable=True),
+        sa.Column("updated_at", sa.DateTime(), server_default=sa.text("now()"), nullable=True),
         sa.ForeignKeyConstraint(
             ["bread_id"],
             ["breads.id"],
