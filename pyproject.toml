@@ -5,6 +5,9 @@ description = ""
 authors = ["Henrique C. C. de Andrade <henrique.ccda@gmail.com>"]
 license = "MIT"
 readme = "README.md"
+packages = [
+    { include = "app" },
+]
 
 [tool.poetry.dependencies]
 python = "^3.12"
@@ -15,6 +18,8 @@ sqlalchemy = "^2.0.27"
 alembic = "^1.13.1"
 pydantic-settings = "^2.2.1"
 gunicorn = "^21.2.0"
+typer = "^0.9.0"
+rich = "^13.7.1"
 
 
 [tool.poetry.group.dev.dependencies]
@@ -31,6 +36,10 @@ coverage = "^7.4.2"
 httpx = "^0.27.0"
 mypy = "^1.8.0"
 pre-commit = "^3.6.2"
+pytest-mock = "^3.12.0"
+
+[tool.poetry.scripts]
+mk-burger-cli = "app.cli:app"
 
 [build-system]
 requires = ["poetry-core"]
@@ -79,8 +88,9 @@ testpaths = [
 ]
 
 markers=[
+    "cli: marks CLI tests",
     "unit: marks unit tests",
-    "integration: marks integration testes",
+    "integration: marks integration tests",
 ]
 
 
