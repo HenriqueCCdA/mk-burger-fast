@@ -71,6 +71,6 @@ def to_dict(burger: Burger) -> dict:
         "pao": burger.bread.tipo,
         "status": burger.status.tipo,
         "opcionais": [it.tipo for it in burger.optionals],
-        "criado_em": burger.create_at,
-        "atualizado_em": burger.update_at,
+        "criado_em": burger.created_at,
+        "atualizado_em": burger.updated_at,
     }

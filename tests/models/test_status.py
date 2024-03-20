@@ -9,8 +9,8 @@ def test_model_instance_obj(status):
 
     assert status.id is None
     assert status.tipo == "Solicitado"
-    assert status.create_at is None
-    assert status.update_at is None
+    assert status.created_at is None
+    assert status.updated_at is None
 
 
 @pytest.mark.unit
@@ -32,5 +32,5 @@ def test_model_persist_in_db(session, status):
     assert status_from_db, id is not None
     assert status_from_db.tipo == "Solicitado"
 
-    assert status_from_db.create_at is not None
-    assert status_from_db.update_at is not None
+    assert status_from_db.created_at is not None
+    assert status_from_db.updated_at is not None

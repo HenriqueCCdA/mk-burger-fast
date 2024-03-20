@@ -10,6 +10,11 @@ TYPE_NAME_LENGTH = 100
 class Base(DeclarativeBase): ...
 
 
+class TimestampMixin:
+    created_at: Mapped[OptionalType[datetime]] = mapped_column(DateTime, server_default=func.now())
+    updated_at: Mapped[OptionalType[datetime]] = mapped_column(DateTime, server_default=func.now(), onupdate=func.now())
+
+
 burger_optional_table = Table(
     "burger_optional",
     Base.metadata,
@@ -18,7 +23,7 @@ burger_optional_table = Table(
 )
 
 
-class Bread(Base):
+class Bread(TimestampMixin, Base):
     __tablename__ = "breads"
 
     id: Mapped[int] = mapped_column(primary_key=True)
@@ -29,14 +34,11 @@ class Bread(Base):
         cascade="all, delete-orphan",
     )
 
-    create_at: Mapped[OptionalType[datetime]] = mapped_column(DateTime, default=func.now())
-    update_at: Mapped[OptionalType[datetime]] = mapped_column(DateTime, default=func.now(), onupdate=func.now())
-
     def __repr__(self) -> str:
         return f"{self.__class__.__name__}(tipo={self.tipo})"
 
 
-class Meat(Base):
+class Meat(TimestampMixin, Base):
     __tablename__ = "meats"
 
     id: Mapped[int] = mapped_column(primary_key=True)
@@ -47,14 +49,11 @@ class Meat(Base):
         cascade="all, delete-orphan",
     )
 
-    create_at: Mapped[OptionalType[datetime]] = mapped_column(DateTime, default=func.now())
-    update_at: Mapped[OptionalType[datetime]] = mapped_column(DateTime, default=func.now(), onupdate=func.now())
-
     def __repr__(self) -> str:
         return f"{self.__class__.__name__}(tipo={self.tipo})"
 
 
-class Optional(Base):
+class Optional(TimestampMixin, Base):
     __tablename__ = "optionals"
 
     id: Mapped[int] = mapped_column(primary_key=True)
@@ -65,14 +64,11 @@ class Optional(Base):
         back_populates="optionals",
     )
 
-    create_at: Mapped[OptionalType[datetime]] = mapped_column(DateTime, default=func.now())
-    update_at: Mapped[OptionalType[datetime]] = mapped_column(DateTime, default=func.now(), onupdate=func.now())
-
     def __repr__(self) -> str:
         return f"{self.__class__.__name__}(tipo={self.tipo})"
 
 
-class Status(Base):
+class Status(TimestampMixin, Base):
     __tablename__ = "status"
 
     id: Mapped[int] = mapped_column(primary_key=True)
@@ -83,14 +79,11 @@ class Status(Base):
         cascade="all, delete-orphan",
     )
 
-    create_at: Mapped[OptionalType[datetime]] = mapped_column(DateTime, default=func.now())
-    update_at: Mapped[OptionalType[datetime]] = mapped_column(DateTime, default=func.now(), onupdate=func.now())
-
     def __repr__(self) -> str:
         return f"{self.__class__.__name__}(tipo={self.tipo})"
 
 
-class Burger(Base):
+class Burger(TimestampMixin, Base):
     __tablename__ = "burgers"
 
     id: Mapped[int] = mapped_column(primary_key=True)
@@ -105,9 +98,6 @@ class Burger(Base):
     status: Mapped[Status] = relationship(back_populates="burgers")
 
     optionals: Mapped[list[Optional]] = relationship(secondary=burger_optional_table, back_populates="burgers")
-
-    create_at: Mapped[OptionalType[datetime]] = mapped_column(DateTime, default=func.now())
-    update_at: Mapped[OptionalType[datetime]] = mapped_column(DateTime, default=func.now(), onupdate=func.now())
 
     def __repr__(self) -> str:
         return f"{self.__class__.__name__}(name={self.name})"
