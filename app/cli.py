@@ -1,7 +1,7 @@
 import typer
-from sqlalchemy import select
-from rich.table import Table
 from rich.console import Console
+from rich.table import Table
+from sqlalchemy import select
 
 from app.db import SessionFactory
 from app.models import Bread, Status
@@ -27,6 +27,7 @@ def generate_table(title: str, result: list) -> Table:
         table.add_row(f"{s.id}", f"{s.tipo}", f"{s.created_at}", f"{s.updated_at}")
 
     return table
+
 
 @status_app.command(name="list")
 def list_status():
@@ -60,6 +61,7 @@ def list_breads():
     table = generate_table("Breads", results)
     console.print(table)
 
+
 @bread_app.command(name="create")
 def create_breads(tipo: str):
     """Cadastra um tipo pão novo."""
@@ -68,6 +70,7 @@ def create_breads(tipo: str):
         bread = Bread(tipo=tipo)
         session.add(bread)
         session.commit()
+
 
 @bread_app.command(name="delete")
 def delete_breads(id: int):
@@ -81,6 +84,7 @@ def delete_breads(id: int):
         session.commit()
 
     console.print(f"[green]Pão com id {id} deletado com sucesso[/green]")
+
 
 app.add_typer(status_app, name="status", help="Status disponiveis na plataforma")
 app.add_typer(bread_app, name="bread", help="Pães disponiveis na plataforma")
