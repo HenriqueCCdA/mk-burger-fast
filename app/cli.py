@@ -4,7 +4,7 @@ from rich.table import Table
 from sqlalchemy import select
 
 from app.db import SessionFactory
-from app.models import Bread, Meat, Status
+from app.models import Bread, Meat, Optional, Status
 
 console = Console()
 
@@ -13,6 +13,7 @@ app = typer.Typer(add_completion=False)
 status_app = typer.Typer()
 bread_app = typer.Typer()
 meat_app = typer.Typer()
+optional_app = typer.Typer()
 
 
 def generate_table(title: str, result: list) -> Table:
@@ -122,6 +123,42 @@ def delete_meat(id: int):
     console.print(f"[green]Carne com id {id} deletado com sucesso[/green]")
 
 
+@optional_app.command(name="list")
+def list_optionals():
+    """Listando os opcionais carnes disponiveis."""
+
+    with SessionFactory() as session:
+        results = session.scalars(select(Optional)).all()
+
+    table = generate_table("Meat", results)
+    console.print(table)
+
+
+@optional_app.command(name="create")
+def create_optional(tipo: str):
+    """Cadastra um tipo opção novo."""
+
+    with SessionFactory() as session:
+        obj = Optional(tipo=tipo)
+        session.add(obj)
+        session.commit()
+
+
+@optional_app.command(name="delete")
+def delete_optional(id: int):
+    """Deleta um tipo de opção por id."""
+
+    with SessionFactory() as session:
+        if (obj := session.get(Optional, id)) is None:
+            console.print(f"[red]Error: Carne com id {id} não achada[/red]")
+            raise typer.Exit(1)
+        session.delete(obj)
+        session.commit()
+
+    console.print(f"[green]Carne com id {id} deletado com sucesso[/green]")
+
+
 app.add_typer(status_app, name="status", help="Status disponiveis na plataforma.")
 app.add_typer(bread_app, name="bread", help="Pães disponiveis na plataforma.")
 app.add_typer(meat_app, name="meat", help="Carnes disponiveis na plataforma.")
+app.add_typer(optional_app, name="optional", help="Opções disponiveis na plataforma.")

@@ -13,9 +13,9 @@ def session_factory_runner(mocker):
     Session = sessionmaker(bind=engine)
     Base.metadata.create_all(engine)
 
-    session = Session()
-    yield mocker.patch("app.cli.SessionFactory", return_value=session)
-    session.close()
+    with Session() as session:
+        yield mocker.patch("app.cli.SessionFactory", return_value=session)
+        session.rollback()
 
     Base.metadata.drop_all(engine)
 

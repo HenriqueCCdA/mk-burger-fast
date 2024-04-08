@@ -66,6 +66,15 @@ def optional():
 
 
 @pytest.fixture
+def optional_db(session, optional):
+
+    session.add(optional)
+    session.commit()
+
+    return optional
+
+
+@pytest.fixture
 def optional_list(session):
 
     list_ = [
