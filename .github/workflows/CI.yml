@@ -1,4 +1,4 @@
-name: "confiacim-api-ci"
+name: "cmk-burguer-fast-ci"
 
 on:
   push:

@@ -42,15 +42,28 @@ def list_status():
     console.print(table)
 
 
-# @status_app.command(name="list")
-# def list_status():
-#     """Cadastra um status novo."""
+@status_app.command(name="create")
+def create_status(tipo: str):
+    """Cadastra um status pão novo."""
 
-#     with SessionFactory() as session:
-#         results = session.scalars(select(Status)).all()
+    with SessionFactory() as session:
+        obj = Status(tipo=tipo)
+        session.add(obj)
+        session.commit()
 
-#     table = generate_table("Status", results)
-#     console.print(table)
+
+@status_app.command(name="delete")
+def delete_status(id: int):
+    """Deleta um tipo de status por id."""
+
+    with SessionFactory() as session:
+        if (obj := session.get(Status, id)) is None:
+            console.print(f"[red]Error: Pão com id {id} não achado[/red]")
+            raise typer.Exit(1)
+        session.delete(obj)
+        session.commit()
+
+    console.print(f"[green]Status com id {id} deletado com sucesso[/green]")
 
 
 @bread_app.command(name="list")
@@ -150,12 +163,12 @@ def delete_optional(id: int):
 
     with SessionFactory() as session:
         if (obj := session.get(Optional, id)) is None:
-            console.print(f"[red]Error: Carne com id {id} não achada[/red]")
+            console.print(f"[red]Error: Opção com id {id} não achada[/red]")
             raise typer.Exit(1)
         session.delete(obj)
         session.commit()
 
-    console.print(f"[green]Carne com id {id} deletado com sucesso[/green]")
+    console.print(f"[green]Opção com id {id} deletado com sucesso[/green]")
 
 
 app.add_typer(status_app, name="status", help="Status disponiveis na plataforma.")
