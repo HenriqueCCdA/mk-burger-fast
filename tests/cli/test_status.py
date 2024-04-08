@@ -8,6 +8,11 @@ from app.models import Status
 runner = CliRunner()
 
 
+@pytest.fixture
+def session_factory_runner(mocker, session):
+    return mocker.patch("app.cli.status.SessionFactory", return_value=session)
+
+
 @pytest.mark.cli
 def test_list(session_factory_runner, status_db):
 
