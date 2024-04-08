@@ -5,6 +5,11 @@ from app.cli import app as cli
 from app.models import Meat
 
 
+@pytest.fixture
+def session_factory_runner(mocker, session):
+    return mocker.patch("app.cli.meat.SessionFactory", return_value=session)
+
+
 @pytest.mark.cli
 def test_list(runner, session_factory_runner, meat_db):
 
